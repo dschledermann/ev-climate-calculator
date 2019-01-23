@@ -46,32 +46,36 @@ var recalc = function() {
     battery = batteryCosts[$("select[name=batteryCost]").val()];
 
     $('#ev-table').append('<table/>');
-    heading = '<th/>';
-    usage = '<td>Udledning, CO2e/km</td>';
-    diff = '<td>Forskel, CO2e/km</td>';
-    breakEven = '<td>Break/even ved</td>';
+    $('#ev-table table').append('<tr><th>Bil</th><th>Udledning, CO2e/km</th><th>Forskel, CO2e/km</th><th>Break/even ved</th>');
 
     $(cars).each(function(c){
-	heading += '<th>' + cars[c].desc + '</th>';
+	dataRow = '<td><a href="#" onclick="showCar(' + c + ')">' + cars[c].desc + '</a></td>';
+	infoRow = '<td style="display: none;" class="infoRow" id="infoRow' + c + '" colspan="4"><p>' + cars[c].desc + ' har et batteri på ' +
+	    cars[c].kwh + ' kWh. ' + 'Med udgangspunkt i batteriproduktionen "' + battery.desc + '" på ' + (battery.gco2e / 1000) +
+	    ' kg CO2 pr produceret kWh,vil den have en udledning ved produktion på '
+	    + (battery.gco2e * cars[c].kwh / 1000000).toLocaleString('da', {maximumFractionDigits: 2}) + ' ton CO2.</p></td>';
+
 	co2kmEV = grid.co2kwh * cars[c].whkm / 1000;
-	usage += '<td>' + co2kmEV.toFixed(2) + ' g</td>';
+	dataRow += '<td>' + co2kmEV.toFixed(2) + ' g</td>';
 	co2diff = co2kmFuel - co2kmEV;
-	diff += '<td>' + co2diff.toFixed(2) + ' g</td>';
+	dataRow += '<td>' + co2diff.toFixed(2) + ' g</td>';
 	diffBreak = (battery.gco2e * cars[c].kwh) / co2diff;
 
 	if (diffBreak > 0) {
-	    breakEven += '<td>' + diffBreak.toLocaleString('da', {maximumFractionDigits: 0}) + ' km</td>';
+	    dataRow += '<td>' + diffBreak.toLocaleString('da', {maximumFractionDigits: 0}) + ' km</td>';
 	}
 	else {
-	    breakEven += '<td>N/A</td>';
+	    dataRow += '<td>N/A</td>';
 	}
-    });
 
-    $('#ev-table table')
-	.append('<tr>' + heading + '</tr>')
-	.append('<tr>' + usage + '</tr>')
-	.append('<tr>' + diff + '</tr>')
-	.append('<tr>' + breakEven + '</tr>');
+	$('#ev-table table').append('<tr>' + dataRow + '</tr>');
+	$('#ev-table table').append('<tr>' + infoRow + '</tr>');
+    });
+}
+
+var showCar = function (i) {
+    $('#infoRow' + i).toggle();
+    return false;
 }
 
 grids = [
