@@ -46,7 +46,7 @@ var recalc = function() {
     battery = batteryCosts[$("select[name=batteryCost]").val()];
 
     $('#ev-table').append('<table/>');
-    $('#ev-table table').append('<tr><th>Bil</th><th>Udledning, CO2e/km</th><th>Forskel, CO2e/km</th><th>Break/even ved</th>');
+    $('#ev-table table').append('<tr><th>Bil</th><th>Udledning, CO2e/km</th><th>Forskel, CO2e/km</th><th>Break/even ved</th></tr>');
 
     $(cars).each(function(c){
 	dataRow = '<td><a href="#" onclick="showCar(' + c + ')">' + cars[c].desc + '</a></td>';
