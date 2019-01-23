@@ -145,6 +145,16 @@ cars = [
 	"desc": "Hyundai Kona electric",
 	"whkm": 160,
 	"kwh": 64
+    },
+    {
+	"desc": "Renault Zoe R90",
+	"whkm": 143,
+	"kwh": 41
+    },
+    {
+	"desc": "Renault Zoe Q210",
+	"whkm": 143,
+	"kwh": 22
     }
 ];
 
