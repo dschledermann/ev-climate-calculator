@@ -2,21 +2,31 @@ $(function(){
     grid = $('<select name="grid" id="grid" class="calc-basis" />');
     $.each(grids, function(i){
 	grid.append(
-	    $("<option></option>")
+	    $("<option/>")
                 .attr("value",i)
                 .text(grids[i].desc));
     });
-    $("#ev-canvas").append(grid);
 
     batteryCost = $('<select name="batteryCost" id="batteryCost" class="calc-basis" />');
     $.each(batteryCosts, function(i){
 	batteryCost.append(
-	    $("<option></option>")
+	    $("<option/>")
 		.attr("value",i)
 		.text(batteryCosts[i].desc));
     });
+
+    driveStyle = $('<select name="driveStyle" id="driveStyle" class="calc-basis" />');
+    $.each(driveStyles, function(i){
+	driveStyle.append(
+	    $("<option/>")
+		.attr("value",i)
+		.text(driveStyles[i].desc))
+    });
+
     $("#ev-canvas")
+	.append(grid)
 	.append(batteryCost)
+	.append(driveStyle)
 	.append($('<p>Diesel: <input name="fuel" value="d" type="radio" class="calc-basis" /> Benzin <input name="fuel" value="b" type="radio" class="calc-basis" /></p>'))
     	.append($('<p>Km/l: <input type="range" min="8" max="33" value="16" class="calc-basis" name="kml" id="kml" /></p>'))
 	.append($('<div id="ev-table"/>'));
@@ -44,6 +54,8 @@ var recalc = function() {
 
     grid = grids[$("select[name=grid]").val()];
     battery = batteryCosts[$("select[name=batteryCost]").val()];
+    driveStyle = driveStyles[$("select[name=driveStyle]").val()];
+    chargeLoss = 1.1;
 
     $('#ev-table').append('<table/>');
     $('#ev-table table').append('<tr><th>Bil</th><th>Udledning, CO2e/km</th><th>Forskel, CO2e/km</th><th>Break/even ved</th></tr>');
@@ -55,7 +67,7 @@ var recalc = function() {
 	    ' kg CO2 pr produceret kWh,vil den have en udledning ved produktion på '
 	    + (battery.gco2e * cars[c].kwh / 1000000).toLocaleString('da', {maximumFractionDigits: 2}) + ' ton CO2.</p></td>';
 
-	co2kmEV = grid.co2kwh * cars[c].whkm / 1000;
+	co2kmEV = chargeLoss * driveStyle.factor * grid.co2kwh * cars[c].whkm / 1000;
 	dataRow += '<td>' + co2kmEV.toFixed(2) + ' g</td>';
 	co2diff = co2kmFuel - co2kmEV;
 	dataRow += '<td>' + co2diff.toFixed(2) + ' g</td>';
@@ -137,9 +149,14 @@ cars = [
 	"kwh": 16.8
     },
     {
+	"desc": "VW eGolf",
+	"whkm": 150,
+	"kwh": 35.9
+    },
+    {
 	"desc": "Hyundai Ioniq",
 	"whkm": 125,
-	"kwh": 27
+	"kwh": 31
     },
     {
 	"desc": "Hyundai Kona electric",
@@ -155,6 +172,25 @@ cars = [
 	"desc": "Renault Zoe Q210",
 	"whkm": 143,
 	"kwh": 22
+    }
+];
+
+driveStyles = [
+    {
+	"desc": "Normal kørsel +6%",
+	"factor": 1.06
+    },
+    {
+	"desc": "Driving miss Daisy",
+	"factor": 1.0
+    },
+    {
+	"desc": "Frisk kørsel +11%",
+	"factor": 1.11
+    },
+    {
+	"desc": "Dæk er min største omkostning +15%",
+	"factor": 1.15
     }
 ];
 
