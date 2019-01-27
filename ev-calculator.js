@@ -1,4 +1,61 @@
+
+// Load the resources
+// Attempt to draw at each load
 $(function(){
+    $.ajax({
+	url: 'grids.json',
+	datatype: 'json',
+	success: function(data) {
+	    grids = data;
+	    draw();
+	}
+    });
+
+    $.ajax({
+	url: 'cars.json',
+	datatype: 'json',
+	success: function(data) {
+	    cars = data;
+	    draw();
+	}
+    });
+
+    $.ajax({
+	url: 'driveStyles.json',
+	datatype: 'json',
+	success: function(data) {
+	    driveStyles = data;
+	    draw();
+	}
+    });
+
+    $.ajax({
+	url: 'batteryCosts.json',
+	datatype: 'json',
+	success: function(data) {
+	    batteryCosts = data;
+	    draw();
+	}
+    });
+});
+
+// Stub for the resources
+var grids = [];
+var cars = [];
+var driveStyles = [];
+var batteryCosts = [];
+
+// Draw the actual form
+var draw = function() {
+
+    // Only do so if there is data in each of the resources
+    if (grids.length == 0 ||
+	cars.length == 0 ||
+	driveStyles == 0 ||
+	batteryCosts == 0) {
+	return;
+    }
+
     grid = $('<select name="grid" id="grid" class="calc-basis" />');
     $.each(grids, function(i){
 	grid.append(
@@ -34,21 +91,16 @@ $(function(){
 	.append($('<div id="ev-table"/>'));
 
     $('.calc-basis').change(recalc);
-    $.ajax({
-	url: 'grids.json',
-	datatype: 'json',
-	success: function(data) {
-	    console.log(data);
-	    grids = data;
-	    recalc();
-	}
-    });
-});
+    recalc();
+};
 
-
+// Fill the table with the results
 var recalc = function() {
     $('#ev-table').html('');
     kml = $('input[name=kml]').val();
+
+    // The CO2 / liter fuel is hardcoded
+    // They're based on the CO2-content plus a margin for production and transport
     if ($('input[name=fuel]:checked').val() == 'd') {
 	co2kmFuel = 3250 / kml;
 	fuelType = 'diesel';
@@ -94,7 +146,7 @@ var recalc = function() {
 	    dataRow += '<td>' + diffBreakYear.toLocaleString('da', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + ' år</td>';
 	}
 	else {
-	    dataRow += '<td>Aldrig</td>';
+	    dataRow += '<td>Aldrig</td><td>Aldring</td>';
 	}
 
 	$('#ev-table table').append('<tr>' + dataRow + '</tr>');
@@ -107,145 +159,3 @@ var showCar = function (i) {
     return false;
 }
 
-grids = [];
-
-/*
-grids = [
-    {
-	"desc": "Dansk gennemsnitsstrøm",
-	"co2kwh": 181
-    },
-    {
-	"desc": "Kulfyring",
-	"co2kwh": 820
-    },
-    {
-	"desc": "Polsk gennemsnitsstrøm",
-	"co2kwh": 650
-    },
-    {
-	"desc": "Tysk gennemsnitsstrøm",
-	"co2kwh": 489
-    },
-    {
-	"desc": "Naturgas",
-	"co2kwh": 490
-    },
-    {
-	"desc": "Solceller",
-	"co2kwh": 41
-    },
-    {
-	"desc": "Kernekraft",
-	"co2kwh": 12
-    },
-    {
-	"desc": "Vindmøller",
-	"co2kwh": 11
-    }
-];
-*/
-
-cars = [
-    {
-	"desc": "Jaguar I-Pace",
-	"whkm": 240,
-	"kwh": 90
-    },
-    {
-	"desc": "Model X P100DL",
-	"whkm": 220,
-	"kwh": 100
-    },
-    {
-	"desc": "Model S 85D",
-	"whkm": 192,
-	"kwh": 85
-    },
-    {
-	"desc": "Model S 70R",
-	"whkm": 192,
-	"kwh": 70
-    },
-    {
-	"desc": "Nissan Leaf",
-	"whkm": 169,
-	"kwh": 24
-    },
-    {
-	"desc": "VW e-UP",
-	"whkm": 140,
-	"kwh": 16.8
-    },
-    {
-	"desc": "VW eGolf",
-	"whkm": 150,
-	"kwh": 35.9
-    },
-    {
-	"desc": "Hyundai Ioniq",
-	"whkm": 125,
-	"kwh": 31
-    },
-    {
-	"desc": "Hyundai Kona electric",
-	"whkm": 160,
-	"kwh": 64
-    },
-    {
-	"desc": "Renault Zoe R90",
-	"whkm": 143,
-	"kwh": 41
-    },
-    {
-	"desc": "Renault Zoe Q210",
-	"whkm": 143,
-	"kwh": 22
-    }
-];
-
-driveStyles = [
-    {
-	"desc": "Normal kørsel +6%",
-	"factor": 1.06
-    },
-    {
-	"desc": "Driving miss Daisy",
-	"factor": 1.0
-    },
-    {
-	"desc": "Frisk kørsel +11%",
-	"factor": 1.11
-    },
-    {
-	"desc": "Dæk er min største omkostning +15%",
-	"factor": 1.15
-    }
-];
-
-batteryCosts = [
-    {
-	"desc": "IVL high",
-	"gco2e": 200000,
-	"introductory": "svensk undersøgelse fra 2017",
-	"src": "https://ing.dk/artikel/svensk-undersoegelse-produktion-elbilers-batterier-udleder-tonsvis-co2-200080"
-    },
-    {
-	"desc": "IVL low",
-	"gco2e": 150000,
-	"introductory": "svensk undersøgelse fra 2017",
-	"src": "https://ing.dk/artikel/svensk-undersoegelse-produktion-elbilers-batterier-udleder-tonsvis-co2-200080"
-    },
-    {
-	"desc": "Ford / LG Chem",
-	"gco2e": 140000,
-	"introductory": "selvrapporteret af Ford / LG Chem i 2016",
-	"src": "https://pubs.acs.org/doi/abs/10.1021/acs.est.6b00830"
-    },    
-    {
-	"desc": "Teslarati",
-	"gco2e": 70000,
-	"introductory": "Teslarati's ekstrapolering i forhold til det Californiske el-net",
-	"src": "https://www.teslarati.com/tesla-greener-think-getting-greener-look-manufacturing/"
-    }
-];

@@ -1,0 +1,18 @@
+[
+    {
+	"desc": "Normal kørsel +6%",
+	"factor": 1.06
+    },
+    {
+	"desc": "Driving miss Daisy",
+	"factor": 1.0
+    },
+    {
+	"desc": "Frisk kørsel +11%",
+	"factor": 1.11
+    },
+    {
+	"desc": "Dæk er min største omkostning +15%",
+	"factor": 1.15
+    }
+]

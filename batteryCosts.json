@@ -1,0 +1,26 @@
+[
+    {
+	"desc": "IVL high",
+	"gco2e": 200000,
+	"introductory": "svensk undersøgelse fra 2017",
+	"src": "https://ing.dk/artikel/svensk-undersoegelse-produktion-elbilers-batterier-udleder-tonsvis-co2-200080"
+    },
+    {
+	"desc": "IVL low",
+	"gco2e": 150000,
+	"introductory": "svensk undersøgelse fra 2017",
+	"src": "https://ing.dk/artikel/svensk-undersoegelse-produktion-elbilers-batterier-udleder-tonsvis-co2-200080"
+    },
+    {
+	"desc": "Ford / LG Chem",
+	"gco2e": 140000,
+	"introductory": "selvrapporteret af Ford / LG Chem i 2016",
+	"src": "https://pubs.acs.org/doi/abs/10.1021/acs.est.6b00830"
+    },    
+    {
+	"desc": "Teslarati",
+	"gco2e": 70000,
+	"introductory": "Teslarati's ekstrapolering i forhold til det Californiske el-net",
+	"src": "https://www.teslarati.com/tesla-greener-think-getting-greener-look-manufacturing/"
+    }
+]

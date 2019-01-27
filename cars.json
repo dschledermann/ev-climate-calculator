@@ -1,0 +1,57 @@
+[
+    {
+	"desc": "Jaguar I-Pace",
+	"whkm": 240,
+	"kwh": 90
+    },
+    {
+	"desc": "Model X P100DL",
+	"whkm": 220,
+	"kwh": 100
+    },
+    {
+	"desc": "Model S 85D",
+	"whkm": 192,
+	"kwh": 85
+    },
+    {
+	"desc": "Model S 70R",
+	"whkm": 192,
+	"kwh": 70
+    },
+    {
+	"desc": "Nissan Leaf",
+	"whkm": 169,
+	"kwh": 24
+    },
+    {
+	"desc": "VW e-UP",
+	"whkm": 140,
+	"kwh": 16.8
+    },
+    {
+	"desc": "VW eGolf",
+	"whkm": 150,
+	"kwh": 35.9
+    },
+    {
+	"desc": "Hyundai Ioniq",
+	"whkm": 125,
+	"kwh": 31
+    },
+    {
+	"desc": "Hyundai Kona electric",
+	"whkm": 160,
+	"kwh": 64
+    },
+    {
+	"desc": "Renault Zoe R90",
+	"whkm": 143,
+	"kwh": 41
+    },
+    {
+	"desc": "Renault Zoe Q210",
+	"whkm": 143,
+	"kwh": 22
+    }
+]
