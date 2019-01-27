@@ -27,12 +27,22 @@ $(function(){
 	.append(grid)
 	.append(batteryCost)
 	.append(driveStyle)
-	.append($('<p>Diesel: <input name="fuel" value="d" type="radio" class="calc-basis" /> Benzin <input name="fuel" value="b" type="radio" class="calc-basis" /></p>'))
-    	.append($('<p>Km/l: <input type="range" min="8" max="33" value="16" class="calc-basis" name="kml" id="kml" /></p>'))
+	.append($('<p><label>Kilometer om året:</label><input name="kmyear" value="20000" type="input" class="calc-basis" /></p>'))
+	.append($('<label>Diesel:</label><input name="fuel" value="d" type="radio" class="calc-basis" checked="checked" />'))
+	.append($('<label>Benzin</label><input name="fuel" value="b" type="radio" class="calc-basis" />'))
+    	.append($('<p><label>Km/l:</label><input type="range" min="8" max="33" value="15" class="calc-basis" name="kml" id="kml" /></p>'))
 	.append($('<div id="ev-table"/>'));
 
     $('.calc-basis').change(recalc);
-    recalc();
+    $.ajax({
+	url: 'grids.json',
+	datatype: 'json',
+	success: function(data) {
+	    console.log(data);
+	    grids = data;
+	    recalc();
+	}
+    });
 });
 
 
@@ -55,29 +65,36 @@ var recalc = function() {
     grid = grids[$("select[name=grid]").val()];
     battery = batteryCosts[$("select[name=batteryCost]").val()];
     driveStyle = driveStyles[$("select[name=driveStyle]").val()];
+    kmyear = $("input[name=kmyear]").val();
     chargeLoss = 1.1;
 
     $('#ev-table').append('<table/>');
-    $('#ev-table table').append('<tr><th>Bil</th><th>Udledning, CO2e/km</th><th>Forskel, CO2e/km</th><th>Break/even ved</th></tr>');
+    $('#ev-table table').append('<tr><th>Bil</th><th>Udledning, CO2e/km</th><th>Forskel, CO2e/km</th><th>Break/even ved km</th><th>Break/even ved år</th></tr>');
 
     $(cars).each(function(c){
 	dataRow = '<td><a href="#" onclick="showCar(' + c + ')">' + cars[c].desc + '</a></td>';
-	infoRow = '<td style="display: none;" class="infoRow" id="infoRow' + c + '" colspan="4"><p>' + cars[c].desc + ' har et batteri på ' +
+	infoRow = '<td style="display: none;" class="infoRow" id="infoRow' + c + '" colspan="4">';
+	infoRow += '<p>' + cars[c].desc + ' har et batteri på ' +
 	    cars[c].kwh + ' kWh. ' + 'Med udgangspunkt i batteriproduktionen "' + battery.desc + '" på ' + (battery.gco2e / 1000) +
 	    ' kg CO2 pr produceret kWh,vil den have en udledning ved produktion på '
-	    + (battery.gco2e * cars[c].kwh / 1000000).toLocaleString('da', {maximumFractionDigits: 2}) + ' ton CO2.</p></td>';
+	    + (battery.gco2e * cars[c].kwh / 1000000).toLocaleString('da', {maximumFractionDigits: 2}) + ' ton CO2.</p>';
+
+	infoRow += '<p>Estimatet er med udgangspunkt i <a href="' + battery.src + '">' + battery.introductory + '</a></p>';
+	infoRow += '</td>';
 
 	co2kmEV = chargeLoss * driveStyle.factor * grid.co2kwh * cars[c].whkm / 1000;
 	dataRow += '<td>' + co2kmEV.toFixed(2) + ' g</td>';
 	co2diff = co2kmFuel - co2kmEV;
 	dataRow += '<td>' + co2diff.toFixed(2) + ' g</td>';
-	diffBreak = (battery.gco2e * cars[c].kwh) / co2diff;
+	diffBreakKm = (battery.gco2e * cars[c].kwh) / co2diff;
 
-	if (diffBreak > 0) {
-	    dataRow += '<td>' + diffBreak.toLocaleString('da', {maximumFractionDigits: 0}) + ' km</td>';
+	if (diffBreakKm > 0) {
+	    diffBreakYear = diffBreakKm / kmyear;
+	    dataRow += '<td>' + diffBreakKm.toLocaleString('da', {maximumFractionDigits: 0}) + ' km</td>';
+	    dataRow += '<td>' + diffBreakYear.toLocaleString('da', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + ' år</td>';
 	}
 	else {
-	    dataRow += '<td>N/A</td>';
+	    dataRow += '<td>Aldrig</td>';
 	}
 
 	$('#ev-table table').append('<tr>' + dataRow + '</tr>');
@@ -90,6 +107,9 @@ var showCar = function (i) {
     return false;
 }
 
+grids = [];
+
+/*
 grids = [
     {
 	"desc": "Dansk gennemsnitsstrøm",
@@ -98,6 +118,14 @@ grids = [
     {
 	"desc": "Kulfyring",
 	"co2kwh": 820
+    },
+    {
+	"desc": "Polsk gennemsnitsstrøm",
+	"co2kwh": 650
+    },
+    {
+	"desc": "Tysk gennemsnitsstrøm",
+	"co2kwh": 489
     },
     {
 	"desc": "Naturgas",
@@ -116,6 +144,7 @@ grids = [
 	"co2kwh": 11
     }
 ];
+*/
 
 cars = [
     {
@@ -196,23 +225,27 @@ driveStyles = [
 
 batteryCosts = [
     {
-	"desc": "ADAC high",
-	"gco2e": 200000
+	"desc": "IVL high",
+	"gco2e": 200000,
+	"introductory": "svensk undersøgelse fra 2017",
+	"src": "https://ing.dk/artikel/svensk-undersoegelse-produktion-elbilers-batterier-udleder-tonsvis-co2-200080"
     },
     {
-	"desc": "ADAC low",
-	"gco2e": 150000
+	"desc": "IVL low",
+	"gco2e": 150000,
+	"introductory": "svensk undersøgelse fra 2017",
+	"src": "https://ing.dk/artikel/svensk-undersoegelse-produktion-elbilers-batterier-udleder-tonsvis-co2-200080"
     },
     {
-	"desc": "Varta",
-	"gco2e": 120000
-    },
+	"desc": "Ford / LG Chem",
+	"gco2e": 140000,
+	"introductory": "selvrapporteret af Ford / LG Chem i 2016",
+	"src": "https://pubs.acs.org/doi/abs/10.1021/acs.est.6b00830"
+    },    
     {
-	"desc": "Tesla/Panasonic S/X",
-	"gco2e": 70000
-    },
-    {
-	"desc": "Tesla/Panasonic 3",
-	"gco2e": 40000
+	"desc": "Teslarati",
+	"gco2e": 70000,
+	"introductory": "Teslarati's ekstrapolering i forhold til det Californiske el-net",
+	"src": "https://www.teslarati.com/tesla-greener-think-getting-greener-look-manufacturing/"
     }
 ];
