@@ -146,7 +146,7 @@ var recalc = function() {
 	    dataRow += '<td>' + diffBreakYear.toLocaleString('da', {maximumFractionDigits: 2, minimumFractionDigits: 2}) + ' år</td>';
 	}
 	else {
-	    dataRow += '<td>Aldrig</td><td>Aldring</td>';
+	    dataRow += '<td>Aldrig</td><td>Aldrig</td>';
 	}
 
 	$('#ev-table table').append('<tr>' + dataRow + '</tr>');
