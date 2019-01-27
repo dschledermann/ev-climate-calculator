@@ -1,34 +1,42 @@
 [
     {
 	"desc": "Dansk gennemsnitsstrøm",
-	"co2kwh": 181
+	"co2kwh": 181,
+	"name": "dkgrid"
     },
     {
 	"desc": "Kulfyring",
-	"co2kwh": 820
+	"co2kwh": 820,
+	"name": "coal"
     },
     {
 	"desc": "Polsk gennemsnitsstrøm",
-	"co2kwh": 650
+	"co2kwh": 650,
+	"name": "plgrid"
     },
     {
 	"desc": "Tysk gennemsnitsstrøm",
-	"co2kwh": 489
+	"co2kwh": 489,
+	"name": "degrid"
     },
     {
 	"desc": "Naturgas",
-	"co2kwh": 490
+	"co2kwh": 490,
+	"name": "natgas"
     },
     {
 	"desc": "Solceller",
-	"co2kwh": 41
+	"co2kwh": 41,
+	"name": "solar"
     },
     {
 	"desc": "Kernekraft",
-	"co2kwh": 12
+	"co2kwh": 12,
+	"name": "nuclear"
     },
     {
 	"desc": "Vindmøller",
-	"co2kwh": 11
+	"co2kwh": 11,
+	"name": "wind"
     }
 ]
