@@ -20,6 +20,16 @@
 	"kwh": 70
     },
     {
+	"desc": "Model 3 LR AWD",
+	"whkm": 140,
+	"kwh": 75
+    },
+    {
+	"desc": "Model 3 SR+ RWD",
+	"whkm": 130,
+	"kwh": 50
+    },
+    {
 	"desc": "Nissan Leaf",
 	"whkm": 169,
 	"kwh": 24
@@ -53,5 +63,10 @@
 	"desc": "Renault Zoe Q210",
 	"whkm": 143,
 	"kwh": 22
+    },
+    {
+	"desc": "Audi E-tron",
+	"whkm": 235,
+	"kwh": 95
     }
 ]
