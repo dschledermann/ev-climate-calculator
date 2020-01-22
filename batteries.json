@@ -1,17 +1,31 @@
 [
     {
-	"desc": "IVL high",
+	"desc": "IVL high 2017",
 	"name": "ivlh",
 	"gco2e": 200000,
 	"introductory": "svensk undersøgelse fra 2017",
 	"src": "https://ing.dk/artikel/svensk-undersoegelse-produktion-elbilers-batterier-udleder-tonsvis-co2-200080"
     },
     {
-	"desc": "IVL low",
+	"desc": "IVL low 2017",
 	"name": "ivll",
 	"gco2e": 150000,
 	"introductory": "svensk undersøgelse fra 2017",
 	"src": "https://ing.dk/artikel/svensk-undersoegelse-produktion-elbilers-batterier-udleder-tonsvis-co2-200080"
+    },
+    {
+	"desc": "IVL high 2019",
+	"name": "ivlh2019",
+	"gco2e": 106000,
+	"introductory": "svensk undersøgelse fra 2019",
+	"src": "https://www.vibilagare.se/nyheter/halverat-klimatavtryck-fran-elbilsbatterier"
+    },
+    {
+	"desc": "IVL low 2019",
+	"name": "ivll2919",
+	"gco2e": 61000,
+	"introductory": "svensk undersøgelse fra 2019",
+	"src": "https://www.vibilagare.se/nyheter/halverat-klimatavtryck-fran-elbilsbatterier"
     },
     {
 	"desc": "Ford / LG Chem",

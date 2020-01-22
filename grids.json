@@ -1,8 +1,13 @@
 [
     {
-	"desc": "Dansk gennemsnitsstrøm",
+	"desc": "Dansk gennemsnitsstrøm 2017",
 	"co2kwh": 181,
 	"name": "dkgrid"
+    },
+    {
+	"desc": "Dansk gennemsnitsstrøm 2019",
+	"co2kwh": 150,
+	"name": "dkgrid2019"
     },
     {
 	"desc": "Kulfyring",
